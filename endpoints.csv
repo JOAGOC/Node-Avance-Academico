@@ -1,0 +1,11 @@
+Método;URL;Params/Body;Descripcion
+POST;/api/aulas;"  {
+    id_aula: 4,
+    edificio: "Edificio D",
+    grupos_atendidos: [8, 11, 10],
+    descripcion_equipamiento:
+      "Sala de conferencias con proyector, sillas cómodas y sistema de videoconferencia.",
+  }";Inserta un aula en la colección de aulas
+GET;/api/aulas/:id;id en la URL;Obtiene la información de un aula específica
+PUT;/api/aulas/:id;;Actualiza la información de un aula específica
+GET;/api/aulas;Null;Obtiene la lista de las aulas almacenadas
