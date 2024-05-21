@@ -1,11 +1,229 @@
-Método;URL;Params/Body;Descripcion
-POST;/api/aulas;"  {
-    id_aula: 4,
-    edificio: "Edificio D",
-    grupos_atendidos: [8, 11, 10],
-    descripcion_equipamiento:
-      "Sala de conferencias con proyector, sillas cómodas y sistema de videoconferencia.",
-  }";Inserta un aula en la colección de aulas
-GET;/api/aulas/:id;id en la URL;Obtiene la información de un aula específica
-PUT;/api/aulas/:id;;Actualiza la información de un aula específica
-GET;/api/aulas;Null;Obtiene la lista de las aulas almacenadas
+Método	URL	Params/Body	Descripcion
+POST	/api/aulas	"{
+  id_aula: 1,
+  edificio: ""Edificio A"",
+  grupos_atendidos: [6, 13, 5, 4, 1],
+  descripcion_equipamiento:
+    ""Proyector, computadora, pizarra digital, sillas cómodas y aire acondicionado."",
+}"	Inserta un AULA en la colección de AULAS
+GET	/api/aulas/:id_aula	id_aula en la URL	Obtiene la información de un AULA en específico
+PUT	/api/aulas/:id	id_aula en la URL y JSON	Actualiza la información de un AULA específica
+DELETE	/api/aulas/:id_aula	id_aula en la URL	Obtiene la información de un AULA específica
+GET	/api/aulas	Null	Obtiene la lista de las AULAS almacenadas
+AULAS			
+POST	/api/grupos	"{
+  ""id"": 1,
+  ""docente"": {
+    ""id_rfc"": ""ABCD123456EFG"",
+    ""datos"": {
+      ""nombre"": ""Juan Carlos Hernández García"",
+      ""carrera"": ""Ingeniería en Sistemas Computacionales"",
+      ""tecnologico"": ""Instituto Tecnológico de Tepic"",
+    },
+  },
+  ""aula"": {
+    ""id_aula"": 1,
+    ""edificio"": ""Edificio A"",
+    ""descripcion_equipamiento"": ""Proyector, computadora, pizarra digital, sillas cómodas y aire acondicionado."",
+  },
+  ""materia"": {
+    ""id"": 1,
+    ""datos"": {
+      ""nombre"": ""NOSQL"",
+      ""carrera"": ""Ingeniería en Sistemas Computacionales"",
+      ""descripcion"": ""Materia en la que se aborda el estilo de modelado y consultas, así como los entornos más comunes en el mercado de los NOSQL y su integración con los entornos de programación."",
+    },
+    ""planDeEstudios"": ""Introducción a bases de datos NoSQL, tipos de bases de datos, modelado, consultas, entornos comunes y aplicaciones prácticas."",
+  },
+  ""alumnos"": [
+    {
+      ""nctrl"": ""20400749"",
+      ""datos"": {
+        ""id_curp"": ""DEF789012JKL"",
+        ""nombre"": ""Ana María Torres"",
+        ""carrera"": ""Ingeniería en Sistemas Computacionales"",
+        ""tecnologico"": ""Instituto Tecnológico de Tepic""
+      }
+    }
+  ],
+  ""horario"": 15
+}"	Inserta un GRUPO en la colección de GRUPOS
+GET	/api/grupos/:id	id en la URL	Obtiene la información de un GRUPO en específico
+PUT	/api/grupos/:id	id y JSON	Actualiza la información de un GRUPO específico
+DELETE	/api/grupos/:id	id en la URL	Elimina un GRUPO en específico
+GET	/api/grupos	Null	Obtiene la lista de GRUPOS
+GRUPOS			
+POST	/api/alumnos	"{
+    nctrl: ""20400748"",
+    datos: {
+      id_curp: ""ABC123456XYZ"",
+      nombre: ""Carlos Gómez Ramírez"",
+      carrera: ""Ingeniería en Sistemas Computacionales"",
+      tecnologico: ""Instituto Tecnológico de Tepic"",
+    },
+    expediente_academico: {
+      reticula: [],
+      grupos_cursados: [
+        { grupo: 2, calificacion: 78 },
+        { grupo: 3, calificacion: 70 },
+        { grupo: 5, calificacion: 80 },
+        { grupo: 7, calificacion: 93 },
+        { grupo: 8, calificacion: 71 },
+        { grupo: 10, calificacion: 95 },
+        { grupo: 12, calificacion: 98 },
+        { grupo: 14, calificacion: 81 },
+      ],
+    },
+  }"	Inserta un ALUMNO en la colección de grupos
+GET	/api/alumnos/:nctrl	nctrl en la URL	Obtiene la información de un ALUMNO en específico
+PUT	/api/alumnos/:nctrl	nctrl y JSON	Actualiza la información de un ALUMNO específico
+DELETE	/api/alumnos/:nctrl	nctrl en la URL	Elimina un ALUMNO en específico
+GET	/api/alumnos	Null	Obtiene la lista de ALUMNOS
+ALUMNOS			
+POST	/api/materias	"{
+    id: 1,
+    datos: {
+      nombre: ""NOSQL"",
+      carrera: ""Ingeniería en Sistemas Computacionales"",
+      descripcion:
+        ""Materia en la que se aborda el estilo de modelado y consultas, así como los entornos más comunes en el mercado de los NOSQL y su integración con los entornos de programación."",
+    },
+    planDeEstudios:
+      ""Introducción a bases de datos NoSQL, tipos de bases de datos, modelado, consultas, entornos comunes y aplicaciones prácticas."",
+  }"	Inserta una MATERIA en la colección de MATERIAS
+GET	/api/materias/:id	id en la URL	Obtiene la información de una MATERIA en específico
+PUT	/api/materias/:id	id en la URL y JSON	Actualiza la información de una MATERIA en específico
+DELETE	/api/materias/:id	id en la URL	Elimina un MATERIA en específico
+GET	/api/materias	Null	Obtiene la lista de MATERIAS
+MATERIAS			
+POST	/api/docentes	"{
+    id_rfc: ""ABCD123456EFG"",
+    datos: {
+      nombre: ""Juan Carlos Hernández García"",
+      carrera: ""Ingeniería en Sistemas Computacionales"",
+      tecnologico: ""Instituto Tecnológico de Tepic"",
+    },
+    materias_impartidas: [
+      {
+        id: 2,
+        datos: {
+          nombre: ""Programación Web"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que cubre conceptos y técnicas de programación para la creación de sitios web, incluyendo HTML, CSS, JavaScript y frameworks modernos."",
+        },
+        planDeEstudios:
+          ""Desarrollo de aplicaciones web, HTML, CSS, JavaScript, frameworks, bases de datos, buenas prácticas de diseño y usabilidad."",
+      },
+      {
+        id: 10,
+        datos: {
+          nombre: ""Seguridad Informática"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que trata sobre los conceptos y técnicas de seguridad informática, incluyendo criptografía, autenticación y protección contra amenazas."",
+        },
+        planDeEstudios:
+          ""Introducción a seguridad informática, criptografía, autenticación, firewalls, detección de intrusos y protección de sistemas y redes."",
+      },
+      {
+        id: 4,
+        datos: {
+          nombre: ""Sistemas Operativos"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que estudia el diseño, funcionamiento y gestión de sistemas operativos, incluyendo conceptos como procesos, memoria y gestión de dispositivos."",
+        },
+        planDeEstudios:
+          ""Fundamentos de sistemas operativos, procesos, hilos, memoria, almacenamiento, sistemas de archivos, seguridad y administración."",
+      },
+      {
+        id: 8,
+        datos: {
+          nombre: ""Algoritmos Avanzados"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que cubre técnicas y estrategias avanzadas de algoritmia, incluyendo diseño y análisis de algoritmos eficientes para la solución de problemas."",
+        },
+        planDeEstudios:
+          ""Introducción a algoritmos avanzados, paradigmas de diseño, análisis de complejidad, algoritmos de búsqueda, ordenamiento y optimización."",
+      },
+    ],
+  }"	Inserta un DOCENTE en la colección de DOCENTES
+GET	/api/docentes/:id_rfc	id_rfc en la URL	Obtiene la información de una DOCENTE en específico
+PUT	/api/docentes/:id_rfc	id_rfc en la URL y JSON	Actualiza la información de un DOCENTE en específico
+DELETE	/api/docentes/:id_rfc	id_rfc en la URL	Elimina un DOCENTE en específico
+GET	/api/docentes	Null	Obtiene la lista de DOCENTES
+DOCENTES			
+CRUD			
+			
+			
+POST	/api/docentes	"{
+    id_rfc: ""ABCD123456EFG"",
+    datos: {
+      nombre: ""Juan Carlos Hernández García"",
+      carrera: ""Ingeniería en Sistemas Computacionales"",
+      tecnologico: ""Instituto Tecnológico de Tepic"",
+    },
+    materias_impartidas: [
+      {
+        id: 2,
+        datos: {
+          nombre: ""Programación Web"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que cubre conceptos y técnicas de programación para la creación de sitios web, incluyendo HTML, CSS, JavaScript y frameworks modernos."",
+        },
+        planDeEstudios:
+          ""Desarrollo de aplicaciones web, HTML, CSS, JavaScript, frameworks, bases de datos, buenas prácticas de diseño y usabilidad."",
+      },
+      {
+        id: 10,
+        datos: {
+          nombre: ""Seguridad Informática"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que trata sobre los conceptos y técnicas de seguridad informática, incluyendo criptografía, autenticación y protección contra amenazas."",
+        },
+        planDeEstudios:
+          ""Introducción a seguridad informática, criptografía, autenticación, firewalls, detección de intrusos y protección de sistemas y redes."",
+      },
+      {
+        id: 4,
+        datos: {
+          nombre: ""Sistemas Operativos"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que estudia el diseño, funcionamiento y gestión de sistemas operativos, incluyendo conceptos como procesos, memoria y gestión de dispositivos."",
+        },
+        planDeEstudios:
+          ""Fundamentos de sistemas operativos, procesos, hilos, memoria, almacenamiento, sistemas de archivos, seguridad y administración."",
+      },
+      {
+        id: 8,
+        datos: {
+          nombre: ""Algoritmos Avanzados"",
+          carrera: ""Ingeniería en Sistemas Computacionales"",
+          descripcion:
+            ""Materia que cubre técnicas y estrategias avanzadas de algoritmia, incluyendo diseño y análisis de algoritmos eficientes para la solución de problemas."",
+        },
+        planDeEstudios:
+          ""Introducción a algoritmos avanzados, paradigmas de diseño, análisis de complejidad, algoritmos de búsqueda, ordenamiento y optimización."",
+      },
+    ],
+  }"	Inserta un DOCENTE en la colección de DOCENTES
+GET	/api/docentes/:id_rfc	id_rfc en la URL	Obtiene la información de una DOCENTE en específico
+PUT	/api/docentes/:id_rfc	id_rfc en la URL y JSON	Actualiza la información de un DOCENTE en específico
+DELETE	/api/docentes/:id_rfc	id_rfc en la URL	Elimina un DOCENTE en específico
+GET	/api/docentes	Null	Obtiene la lista de DOCENTES
+QUERYS			
+GET	/api/alumnos/:nctrl/materias	nctrl en el URL	Q1. Listar las materias que un alumno ha cursado.
+GET	/api/alumnos/grupo/:id	id en el URL	Q2. Listar los alumnos que están cursando una materia específica de un grupo específico.
+GET	/api/alumnos/:nctrl/calificaciones	nctrl en el URL	Q3. Listar las calificaciones de un alumno en todas sus materias cursadas.
+GET	/api/docentes/materia/:id	id en el URL	Q4. Listar los docentes que imparten una materia específica.
+GET	"/api/materias/:id/alumnos?calificacion_minima=90
+"	id y calificacionMinima= en URL	Q5. Listar los alumnos que han obtenido una calificación superior a 90 en una materia específica.
+GET	/api/grupos/materia=1	materia=1	Q6. Listar los grupos que correspondan a una materia específica.
+GET	/api/alumnos/:nctrl/materias?hora=12	nctrl y hora en URL	Q7. Listar las materias que cursa un alumno en específico (horario).
+GET	/api/alumnos/:nctrl/porCursar	nctrl en URL	Q8. Listar las materias que faltan por cursar a un alumno en específico.
+GET	/api/docentes/:rfc/grupos	rfc en URL	Q9. Listar las materias que imparte un docente en específico, junto con los alumnos que cursan cada una de las materias.
