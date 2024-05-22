@@ -4,7 +4,7 @@ const router = express.Router();
 const {
     obtenerAulas,
     obtenerAulaPorId,
-    crearAula,
+    crearAulas,
     actualizarAula,
     eliminarAula
 } = require('../controllers/aulas');
@@ -16,7 +16,7 @@ router.get('/', obtenerAulas);
 router.get('/:id_aula', obtenerAulaPorId);
 
 // Ruta para crear una nueva aula
-router.post('/', crearAula);
+router.post('/', crearAulas);
 
 // Ruta para actualizar una aula por su ID (id_aula)
 router.put('/:id_aula', actualizarAula);
