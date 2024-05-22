@@ -14,8 +14,8 @@ services:
       - REDIS_HOST=redis01
       - REDIS_PORT=6379
       - PORT=3000
-    # volumes:
-    #   - .:/app
+    volumes:
+      - .:/app
     networks:
       - red01
   mongo01:

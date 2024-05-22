@@ -11,4 +11,4 @@ COPY . .
 # Exponer el puerto en el que la aplicación va a correr
 EXPOSE 3000
 # Comando para iniciar la aplicación
-CMD ["node", "src/server.js"]
+CMD [ "npm", "run", "dev" ]
