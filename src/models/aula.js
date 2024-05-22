@@ -15,8 +15,7 @@ const aulaSchema = new Schema({
   },
   // grupos_atendidos es un arreglo de ObjectIds referenciando al modelo 'Grupo'
   grupos_atendidos: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Grupo',
+    type: Number,//ref
     required: true
   }],
   descripcion_equipamiento: {

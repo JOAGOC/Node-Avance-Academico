@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  app01:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo01
+      - mongo02
+      - mongo03
+      - redis01
+    environment:
+      - MONGO_URI=mongodb://mongo01:27017/avance_academico?replicaSet=replica
+      - REDIS_HOST=redis01
+      - REDIS_PORT=6379
+      - PORT=3000
+    # volumes:
+    #   - .:/app
+    networks:
+      - red01
+  mongo01:
+    image: mongo:latest
+    command: mongod --replSet replica --bind_ip_all
+    ports:
+      - "27017:27017"
+    networks:
+      - red01
+
+  mongo02:
+    image: mongo:latest
+    command: mongod --replSet replica --bind_ip_all
+    ports:
+      - "27018:27017"
+    networks:
+      - red01
+
+  mongo03:
+    image: mongo:latest
+    command: mongod --replSet replica --bind_ip_all
+    ports:
+      - "27019:27017"
+    networks:
+      - red01
+
+  redis01:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - red01
+networks:
+  red01:
+    driver: bridge

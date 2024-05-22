@@ -1,5 +1,8 @@
 // /src/controllers/aulas.js
 
+const Aula = require('../models/aula');
+
+
 const obtenerAulas = async (req, res) => {
   try {
     // Lógica para obtener todas las aulas
@@ -19,13 +22,21 @@ const obtenerAulaPorId = async (req, res) => {
   }
 };
 
-const crearAula = async (req, res) => {
-  const aula = req.body;
+const crearAulas = async (req, res) => {
+  const entrada = req.body; // Puede ser un único objeto o un array de objetos
+
   try {
-    // Lógica para crear una nueva aula
-    res.send('Crear una nueva aula');
+    if (Array.isArray(entrada)) {
+      // Si es un array, usar insertMany para inserción masiva
+      const resultado = await Aula.insertMany(entrada);
+      res.status(201).send(resultado);
+    } else {
+      // Si no es un array, asumir que es un solo objeto y usar create
+      const resultado = await Aula.create(entrada);
+      res.status(201).send(resultado);
+    }
   } catch (error) {
-    res.status(500).send({ error: 'Error al crear una nueva aula' });
+    res.status(500).send({ error: 'Error al crear las aulas', detalles: error.message });
   }
 };
 
@@ -53,7 +64,7 @@ const eliminarAula = async (req, res) => {
 module.exports = {
   obtenerAulas,
   obtenerAulaPorId,
-  crearAula,
+  crearAulas,
   actualizarAula,
   eliminarAula
 };
