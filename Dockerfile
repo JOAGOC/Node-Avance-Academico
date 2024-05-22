@@ -11,4 +11,4 @@ COPY . .
 # Exponer el puerto en el que la aplicación va a correr
 EXPOSE 3000
 # Comando para iniciar la aplicación
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "start" ]
