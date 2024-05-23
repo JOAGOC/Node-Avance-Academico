@@ -22,7 +22,7 @@ const alumnoSchema = new Schema({
       planDeEstudios: { type: String, required: true }
     }],
     grupos_cursados: [{
-      grupo: { type: Schema.Types.ObjectId, ref: 'Grupo', required: true },
+      grupo: { type: Number, required: true },
       calificacion: { type: Number, required: true }
     }]
   }

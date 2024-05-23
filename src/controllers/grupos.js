@@ -1,31 +1,41 @@
 // /src/controllers/grupos.js
 
+const Grupo = require('../models/grupo');
+
 const obtenerGrupos = async (req, res) => {
   try {
-    // Lógica para obtener todos los grupos
-    res.send('Obtener todos los grupos');
+    const grupos = await Grupo.find({});
+    res.json(grupos);
   } catch (error) {
-    res.status(500).send({ error: 'Error al obtener los grupos' });
+    res.status(500).send({ error: 'Error al obtener los grupos', detalles: error.message });
   }
 };
 
 const obtenerGrupoPorId = async (req, res) => {
   const { id } = req.params;
   try {
-    // Lógica para obtener un grupo por su ID
-    res.send(`Obtener grupo con ID: ${id}`);
+    const grupo = await Grupo.findOne({id});
+    if (!grupo) {
+      return res.status(404).send({ error: `Grupo con id: ${id} no encontrado` });
+    }
+    res.json(grupo);
   } catch (error) {
-    res.status(500).send({ error: `Error al obtener el grupo con ID: ${id}` });
+    res.status(500).send({ error: `Error al obtener el grupo con ID: ${id}`, detalles: error.message });
   }
 };
 
 const crearGrupo = async (req, res) => {
   const grupo = req.body;
   try {
-    // Lógica para crear un nuevo grupo
-    res.send('Crear un nuevo grupo');
+    if (Array.isArray(grupo)){
+      const respuesta = await Grupo.insertMany(grupo);
+      res.status(201).send(respuesta);
+    } else {
+      const respuesta = await Grupo.create(grupo);
+      res.status(201).send(respuesta);
+    }
   } catch (error) {
-    res.status(500).send({ error: 'Error al crear un nuevo grupo' });
+    res.status(500).send({ error: 'Error al crear un nuevo grupo', detalles: error.message });
   }
 };
 
@@ -33,30 +43,38 @@ const actualizarGrupo = async (req, res) => {
   const { id } = req.params;
   const datosActualizados = req.body;
   try {
-    // Lógica para actualizar un grupo por su ID
-    res.send(`Actualizar grupo con ID: ${id}`);
+    const grupoActualizado = await Grupo.findOneAndUpdate({id}, datosActualizados, { new: true});
+    if (!grupoActualizado) {
+      return res.status(404).send({ error: `Grupo con id: ${id} no encontrado` });
+    }
+    res.json(grupoActualizado);
   } catch (error) {
-    res.status(500).send({ error: `Error al actualizar el grupo con ID: ${id}` });
+    res.status(500).send({ error: `Error al actualizar el grupo con ID: ${id}`, detalles: error.message });
   }
 };
 
 const eliminarGrupo = async (req, res) => {
   const { id } = req.params;
   try {
-    // Lógica para eliminar un grupo por su ID
-    res.send(`Eliminar grupo con ID: ${id}`);
+    const grupoEliminado = await Grupo.findOneAndDelete({id});
+    if (!grupoEliminado) {
+      return res.status(404).send({ error: `Grupo con id: ${id} no encontrado` });
+    }
+    res.json({ message: `Grupo con ID: ${id} eliminado` });
   } catch (error) {
-    res.status(500).send({ error: `Error al eliminar el grupo con ID: ${id}` });
+    res.status(500).send({ error: `Error al eliminar el grupo con ID: ${id}`, detalles: error.message });
   }
 };
 
+//TODO:
 const obtenerGruposPorMateria = async (req, res) => {
-  const { id } = req.params;
+  let { id } = req.params; // Asumiendo que `id` es el ID de la materia
+  id = parseInt(id);
   try {
-    // Lógica para obtener los grupos que correspondan a una materia específica
-    res.send(`Obtener grupos correspondientes a la materia con ID: ${id}`);
+    const grupos = await Grupo.find({ "materia.id": id }); // Asumiendo que el modelo Grupo tiene un campo `materia`
+    res.json(grupos);
   } catch (error) {
-    res.status(500).send({ error: `Error al obtener los grupos de la materia con ID: ${id}` });
+    res.status(500).send({ error: `Error al obtener los grupos de la materia con ID: ${id}`, detalles: error.message });
   }
 };
 

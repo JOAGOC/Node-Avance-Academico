@@ -4,9 +4,17 @@ const cors = require('cors'); // Middleware para permitir solicitudes de recurso
 const morgan = require('morgan'); // Middleware para el registro de solicitudes HTTP
 const logger = require('./middleware/logger'); // Middleware personalizado para registrar solicitudes en Redis
 const { mongoose, redisClient } = require('./config/db'); // Importamos las configuraciones de MongoDB y Redis
+const bodyParser = require('body-parser')
 
 // Creamos una instancia de la aplicación Express
 const app = express();
+
+// BodyParser
+// Configura el límite de tamaño para el análisis JSON (por ejemplo, 10 MB)
+app.use(bodyParser.json({ limit: '1mb' }));
+// Configura el límite de tamaño para la codificación URL (por ejemplo, 5 MB)
+app.use(bodyParser.urlencoded({ limit: '1mb', extended: true }));
+
 // Middleware para parsear solicitudes JSON
 app.use(express.json());
 // Middleware para permitir solicitudes de recursos cruzados

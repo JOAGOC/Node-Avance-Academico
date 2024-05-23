@@ -1,31 +1,42 @@
 // /src/controllers/materias.js
 
+const Materia = require('../models/materia');
+const Alumno = require('../models/alumno');
+
 const obtenerMaterias = async (req, res) => {
   try {
-    // Lógica para obtener todas las materias
-    res.send('Obtener todas las materias');
+    const resultado = await Materia.find({});
+    res.status(200).send(resultado);
   } catch (error) {
-    res.status(500).send({ error: 'Error al obtener las materias' });
+    res.status(500).send({ error: 'Error al obtener las materias', detalles: error.message });
   }
 };
 
 const obtenerMateriaPorId = async (req, res) => {
   const { id } = req.params;
   try {
-    // Lógica para obtener una materia por su ID
-    res.send(`Obtener materia con ID: ${id}`);
+    const resultado = await Materia.findOne({id});
+    if (!resultado) {
+      return res.status(404).send({ error: `Materia con id: ${id} no encontrada` });
+    }
+    res.status(200).send(resultado);
   } catch (error) {
-    res.status(500).send({ error: `Error al obtener la materia con ID: ${id}` });
+    res.status(500).send({ error: `Error al obtener la materia con ID: ${id}`, detalles: error.message });
   }
 };
 
-const crearMateria = async (req, res) => {
+const crearMaterias = async (req, res) => {
   const materia = req.body;
   try {
-    // Lógica para crear una nueva materia
-    res.send('Crear una nueva materia');
+    if (Array.isArray(materia)){
+      const resultado = await Materia.insertMany(materia);
+      res.status(201).send(resultado);
+    } else {
+      const resultado = await Materia.create(materia);
+      res.status(201).send(resultado);
+    }
   } catch (error) {
-    res.status(500).send({ error: 'Error al crear una nueva materia' });
+    res.status(500).send({ error: 'Error al crear una nueva materia', detalles: error.message  });
   }
 };
 
@@ -33,29 +44,67 @@ const actualizarMateria = async (req, res) => {
   const { id } = req.params;
   const datosActualizados = req.body;
   try {
-    // Lógica para actualizar una materia por su ID
-    res.send(`Actualizar materia con ID: ${id}`);
+    const resultado = await Materia.findOneAndUpdate({id},datosActualizados,{new: true});
+    if(!resultado){
+      return res.status(404).send({error: `Materia con id: ${id} no encontrada`});
+    }
+    res.status(200).send(resultado);
   } catch (error) {
-    res.status(500).send({ error: `Error al actualizar la materia con ID: ${id}` });
+    res.status(500).send({ error: `Error al actualizar la materia con ID: ${id}`, detalles: error.message});
   }
 };
 
 const eliminarMateria = async (req, res) => {
   const { id } = req.params;
   try {
-    // Lógica para eliminar una materia por su ID
-    res.send(`Eliminar materia con ID: ${id}`);
+    const resultado = await Materia.findOneAndDelete({id});
+    if(!resultado){
+      return res.status(404).send({error: `Materia con id: ${id} no encontrada`});
+    }
+    res.status(200).send({message: `Materia con id: ${id} eliminada`})
   } catch (error) {
-    res.status(500).send({ error: `Error al eliminar la materia con ID: ${id}` });
+    res.status(500).send({ error: `Error al eliminar la materia con ID: ${id}`, detalles: error.message });
   }
 };
 
+//TODO: Query
 const obtenerAlumnosCalificacionSuperior = async (req, res) => {
-  const { id } = req.params;
-  const { calificacion_minima } = req.params;
+  let { id } = req.params;
+  id = parseInt(id);
+  let { calificacion_minima } = req.params;
+  calificacion_minima = parseInt(calificacion_minima);
   try {
-    // Lógica para obtener los alumnos que han obtenido una calificación superior a 90 en una materia específica
-    res.send(`Obtener alumnos con calificación superior a ${calificacion_minima} en la materia con ID: ${id}`);
+    const resultado = await Alumno.aggregate([
+      { $unwind: "$expediente_academico.grupos_cursados" },
+      {
+        $lookup: {
+          from: "grupos",
+          localField: "expediente_academico.grupos_cursados.grupo",
+          foreignField: "id",
+          as: "expediente_academico.grupos_cursados.grupo",
+        },
+      },
+      { $unwind: "$expediente_academico.grupos_cursados.grupo" },
+      { $match: { "expediente_academico.grupos_cursados.grupo.materia.id": id } },
+      {
+        $match: {
+          "expediente_academico.grupos_cursados.calificacion": { $gt: calificacion_minima },
+        },
+      },
+      {
+        $group: {
+          _id: "$nctrl",
+          alumno: { $first: "$datos" },
+          grupos: {
+            $push: {
+              materia: "$expediente_academico.grupos_cursados.grupo.materia",
+              calificacion: "$expediente_academico.grupos_cursados.calificacion",
+            },
+          },
+        },
+      },
+    ]);
+    res.status(200).send(resultado);
   } catch (error) {
     res.status(500).send({ error: `Error al obtener los alumnos con calificación superior a ${calificacion_minima} en la materia con ID: ${id}` });
   }
@@ -64,7 +113,7 @@ const obtenerAlumnosCalificacionSuperior = async (req, res) => {
 module.exports = {
   obtenerMaterias,
   obtenerMateriaPorId,
-  crearMateria,
+  crearMateria: crearMaterias,
   actualizarMateria,
   eliminarMateria,
   obtenerAlumnosCalificacionSuperior
