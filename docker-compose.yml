@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   app01:
-    build: .
+    image: joagocdocker/node-avance-academico:latest
     ports:
       - "3000:3000"
     depends_on:
@@ -16,7 +16,7 @@ services:
       - PORT=3000
     networks:
       - red01
-      
+
   mongo01:
     image: mongo:latest
     command: mongod --replSet replica --bind_ip_all
