@@ -67,7 +67,6 @@ const eliminarAlumno = async (req, res) => {
   }
 };
 
-//TODO:
 const obtenerCalificacionesAlumno = async (req, res) => {
   const { nctrl } = req.params;
   try {

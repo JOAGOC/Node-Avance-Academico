@@ -66,7 +66,6 @@ const eliminarGrupo = async (req, res) => {
   }
 };
 
-//TODO:
 const obtenerGruposPorMateria = async (req, res) => {
   let { id } = req.params; // Asumiendo que `id` es el ID de la materia
   id = parseInt(id);

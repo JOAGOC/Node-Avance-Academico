@@ -67,7 +67,6 @@ const eliminarDocente = async (req, res) => {
   }
 };
 
-//TODO:
 const obtenerMateriasImpartidasPorDocente = async (req, res) => {
   const { rfc } = req.params;
   try {
