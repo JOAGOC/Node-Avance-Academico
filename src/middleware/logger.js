@@ -13,6 +13,14 @@ client.connect().then(() => {
     console.error('Error conexion a Redis:', err);
 });
 module.exports = (req, res, next) => {
+    const originalSend = res.send;
+    let responseBody;
+
+    res.send = function (body) {
+        responseBody = body;
+        return originalSend.apply(this, arguments);
+    };
+
     res.on('finish', async () => {
         if (!client.isOpen) {
             console.error('Redis client -->> No conectado.');
@@ -25,11 +33,12 @@ module.exports = (req, res, next) => {
                 method: req.method,
                 url: req.originalUrl,
                 headers: req.headers,
-                body: req.body
+                data: req.body
             },
             res: {
                 statusCode: res.statusCode,
-                statusMessage: res.statusMessage
+                statusMessage: res.statusMessage,
+                response: responseBody
             }
         });
         try {
